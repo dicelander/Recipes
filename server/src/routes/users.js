@@ -22,4 +22,23 @@ router.post("/register", async (req, res) =>{
     res.json({message: "Usuário registrado!"});
 });
 
+router.post('/login', async (req, res) => {
+
+    const { username, password } = req.body;
+    const user = await UserModel.findOne({ username });
+
+    if(!user){
+        return res.json({ message: "Usuário não cadastrado"});
+    }
+
+    const isValidPassword = await bcrypt.compare(password, user.password);
+
+    if(!isValidPassword){
+        return res.json({ message: "Senha inválida"});
+    }
+
+    const token = jwt.sign({ id: user._id }, "secret");
+    res.json({token, userID: user._id});
+});
+
 export {router as userRouter};
