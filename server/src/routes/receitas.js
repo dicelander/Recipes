@@ -69,5 +69,16 @@ router.put("/", async (req, res) => {
     }
 });
 
+// Recupera id de receitas salvas
+router.get("/receitasSalvas/ids/:userId", async (req, res) => {
+    try {
+      const user = await UserModel.findById(req.params.userId);
+      res.status(201).json({ receitasSalvas: user?.receitasSalvas });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json(err);
+    }
+  });
+
 export { router as routerReceitas };
 
