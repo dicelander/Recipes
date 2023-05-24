@@ -56,5 +56,18 @@ router.get("/:idReceita", async (req, res) => {
     }
 });
 
+// Salva Receita
+router.put("/", async (req, res) => {
+    const receita = await ModeloReceitas.findById(req.body.idReceita);
+    const user = await UserModel.findById(req.body.userID);
+    try {
+      user.receitasSalvas.push(recipe);
+      await user.save();
+      res.status(201).json({ receitasSalvas: user.receitasSalvas });
+    } catch (err) {
+      res.status(500).json(err);
+    }
+});
+
 export { router as routerReceitas };
 
