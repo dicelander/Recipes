@@ -46,4 +46,15 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
+// Get receita por ID
+router.get("/:idReceita", async (req, res) => {
+    try {
+      const result = await modeloReceitas.findById(req.params.idReceita);
+      res.status(200).json(result);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+});
+
 export { router as routerReceitas };
+
